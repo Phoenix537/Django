@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import RegistrationForm
+from django.contrib.auth.models import User
 
 
 def home(request):
@@ -20,3 +21,7 @@ def register(request):
 
         # args = {'form': RegistrationForm()}
         return render(request, 'account/reg_form.html', {'form': RegistrationForm})
+
+def profile(request):
+    args = {"user": request.user}
+    return render(request, 'account/profile.html', args)
