@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import RegistrationForm
 from django.contrib.auth.models import User
-
+from django.contrib.auth.forms import UserChangeForm
 
 def home(request):
     numbers = [1,2,3,4,5]
@@ -22,6 +22,18 @@ def register(request):
         # args = {'form': RegistrationForm()}
         return render(request, 'account/reg_form.html', {'form': RegistrationForm})
 
-def profile(request):
+def view_profile(request):
     args = {"user": request.user}
     return render(request, 'account/profile.html', args)
+def edit_profile(request):
+    if request.method == "POST":   
+        form = UserChangeForm(request.POST, instance=request.user)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('/account/profile')
+    else:
+        form = UserChangeForm(instance=request.user)
+        args = {'form': form}
+        return render(request, 'account/edit_profile.html', args)
+
